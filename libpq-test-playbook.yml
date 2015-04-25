@@ -1,0 +1,42 @@
+#!/usr/bin/env ansible-playbook
+---
+# Top-level Ansible playbook for testing the node-libpq module.
+#
+# This playbook depends on some roles installed using the Ansible Galaxy command.
+# Those roles must be installed locally by running the following command:
+#  ansible-galaxy install -r requirements.yml
+
+- name: Configure the environment for testing the module.
+  hosts: test
+  roles: 
+    - role: libpq
+  post_tasks:  
+    - name: Install psycopg2 on RedHat distributions.
+      yum: name=python-psycopg2 state=present
+      sudo: True
+      when: ansible_os_family == "RedHat"
+  
+    - name: Verify sudoers allows running as postgres
+      lineinfile: "dest=/etc/sudoers state=present regexp='^%wheel' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
+      sudo: True
+
+    - name: Create a user within the database environment.
+      postgresql_user:
+        name: "{{ ansible_ssh_user }}"
+      sudo: True
+      sudo_user: postgres
+  
+    - name: Create the user default database.
+      postgresql_db:
+        name: "{{ ansible_ssh_user }}"
+        owner: "{{ ansible_ssh_user }}"
+      sudo: True
+      sudo_user: postgres  
+      notify: Reload PostgreSQL
+
+    - name: Extend mocha timeout to 15 seconds.
+      lineinfile: dest={{ libpq_dest_folder }}/test/mocha.opts regexp=^--timeout line='--timeout 15000'
+      
+    - name: Test the libpq module
+      command: npm run test chdir={{ libpq_dest_folder }}
+

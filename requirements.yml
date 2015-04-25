@@ -1,0 +1,7 @@
+---
+- src: https://github.com/katucker/ansible-postgresql.git
+  path: roles
+  name: postgresql
+- src: https://github.com/katucker/ansible-libpq.git
+  path: roles
+  name: libpq
