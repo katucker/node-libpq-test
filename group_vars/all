@@ -8,8 +8,9 @@ libpq_repo_version: linux-gyp
 # Install the libpq node module development dependencies for testing purposes.
 libpq_production: False
 
-# Set the postgresql role to install the server and development files.
-postgresql_version: 9.3
+# Set the postgresql role variables to facilitate testing.
+postgresql_flavor: pgdg
+postgresql_version: 9.4
 postgresql_server: True
 postgresql_devel: True
 postgresql_pg_hba_local_postgres_user: True
@@ -18,4 +19,7 @@ postgresql_pg_hba_local_ipv4: False
 postgresql_pg_hba_local_ipv6: False
 postgresql_pg_hba_conf:
   - host  all  all  localhost  trust
+
+postgresql_debian_pkgs: [ python-psycopg2 ]
+postgresql_redhat_pkgs: [ python-psycopg2 ]
 

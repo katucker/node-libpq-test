@@ -11,11 +11,6 @@
   roles: 
     - role: libpq
   post_tasks:  
-    - name: Install psycopg2 on RedHat distributions.
-      yum: name=python-psycopg2 state=present
-      sudo: True
-      when: ansible_os_family == "RedHat"
-  
     - name: Verify sudoers allows running as postgres
       lineinfile: "dest=/etc/sudoers state=present regexp='^%wheel' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
       sudo: True
@@ -32,7 +27,6 @@
         owner: "{{ ansible_ssh_user }}"
       sudo: True
       sudo_user: postgres  
-      notify: Reload PostgreSQL
 
     - name: Extend mocha timeout to 15 seconds.
       lineinfile: dest={{ libpq_dest_folder }}/test/mocha.opts regexp=^--timeout line='--timeout 15000'

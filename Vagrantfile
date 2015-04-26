@@ -10,8 +10,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "base/centos-6.5"
-  config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box"
+  # Parameters for specifying VM boxes on different operating systems.
+  # Uncomment one set, run "vagrant up", run your tests, and run "vagrant destroy"
+  # when the tests pass.
+  # Note, you should remove the entry from ~/.ssh/known_hosts (or equivalent) for
+  # host [127.0.0.1]:2222 between the "vagrant destroy" for one OS and the
+  # "vagrant up" for the next OS to test.
+#   config.vm.box = "base/centos-6.5"
+#   config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box"
+#   config.vm.box = "webhippie/centos-7"
+   config.vm.box = "ubuntu/trusty64"
+#   config.vm.box = "ubuntu/precise64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
